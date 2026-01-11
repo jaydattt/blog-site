@@ -1,0 +1,77 @@
+author = "Jaydatt Ramkabir"
+title = "Jaydatt"
+base_url = "https://cydave.github.io/zola-theme-papermod"
+compile_sass = true
+build_search_index = true
+generate_feeds = true
+feed_filenames = ["atom.xml"]
+minify_html = true
+
+
+taxonomies = [{ name = "tags", feed = true }]
+
+[search]
+# Whether to include the title of the page/section in the index
+include_title = true
+# Whether to include the description of the page/section in the index
+include_description = false
+# Whether to include the path of the page/section in the index
+include_path = false
+# Whether to include the rendered content of the page/section in the index
+include_content = true
+# At which character to truncate the content to. Useful if you have a lot of pages and the index would
+# become too big to load on the site. Defaults to not being set.
+# truncate_content_length = 100
+# Wether to produce the search index as a javascript file or as a JSON file
+# Accepted value "elasticlunr_javascript" or "elasticlunr_json"
+index_format = "elasticlunr_json"
+
+[markdown]
+# Whether to do syntax highlighting
+# Theme can be customised by setting the `highlight_theme` variable to a theme supported by Zola
+highlight_code = true
+
+[extra]
+
+[extra.papermod]
+title = "Jaydatt Ramkabir"
+default_theme = "auto"
+theme = "light"
+language_direction = "auto"
+keywords = ["keyword1", "keyword2", "keyword3"]
+show_theme_toggle = true
+show_scroll_to_top = true
+show_code_copy_buttons = true
+show_reading_time = true
+show_word_count = true
+show_post_nav_links = true
+show_post_meta = true
+default_toc_open = false
+show_post_edit_button = false
+show_archive_year_count = true
+show_archive_month_count = true
+edit_post_url = "https://github.com/cydave/zola-theme-papermod/tree/master"
+#copyright = ""
+date_format = "%d-%m-%Y"
+navigation = [
+    { url = "$BASE_URL/archive", title = "Archive" },
+    { url = "$BASE_URL/posts", title = "Posts" },
+    { url = "$BASE_URL/tags", title = "Tags" },
+    # { url = "$BASE_URL/search", title = "Search" },
+    # { url = "https://getzola.org/", title = "Zola", target = "_blank", is_external = true },
+]
+
+home_content = '''
+<p style="margin-bottom: 0.5rem;">I'm a <strong>Frontend Developer</strong> deeply embedded in the 
+<strong><span style="color: #ca9800; font-weight: bold;">JavaScript</span></strong> ecosystem. focused on architecting scalable web solutions and optimizing client-side performance. <br> I specialize in shipping <strong>revenue-generating products</strong> and can often be found rapidly engineering <strong>MVP</strong>s from concept to launch.🚀</p> <br/>
+
+<p>Beyond the terminal, either I'm exploring capital markets, or seeking out new cultures and landscapes, I prioritize physical discipline and a healthy lifestyle, operating on the belief that a healthy body leads to a healthy codebase.</p>
+'''
+home_title = "👋🏽Hello!"
+social_icons = [
+    { url = "https://github.com/jaydattt", title = "GitHub", icon = "github" },
+    { url = "https://x.com/geekyjedy", title = "Twitter", icon = "twitter" },
+    { url = "https://linkedin.com/in/jaydattramkabir", title = "Linkedin", icon = "linkedin" },
+    { url = "https://instagram.com/geekyjedy", title = "Instagram", icon = "instagram" },
+    { url = "$BASE_URL/atom.xml", title = "RSS", icon = "rss" },
+]
