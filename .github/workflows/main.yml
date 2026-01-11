@@ -1,14 +1,23 @@
-on: push
-name: Build and deploy GH Pages
+name: Build and Deploy Zola
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write # allows the action to push to gh-pages
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
     steps:
-      - name: checkout
-        uses: actions/checkout@v3.0.0
-      - name: build_and_deploy
-        uses: shalzz/zola-deploy-action@v0.19.1
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true # use 'recursive' if your theme has its own submodules
+
+      - name: Build and deploy
+        uses: shalzz/zola-deploy-action@v0.19.2
         env:
           PAGES_BRANCH: gh-pages
-          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
