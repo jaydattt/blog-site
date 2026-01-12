@@ -1,18 +1,18 @@
 +++
-title = "Markdown Examples"
-date = 2023-02-04T15:00:00Z
+title = "Secure Way to Handle Frontend File Uploads: S3 Presigned URLs"
+date = 2026-01-12
 
 [taxonomies]
-tags = [ "theme","nextjs"]
+tags = [ "nextjs","aws","s3"]
 +++
 
-This article offers a sample of basic Markdown syntax that can be used in files
+Speed up file uploads and lighten your server load by uploading directly to S3 from the frontend using AWS presigned URLs. This article covers S3 bucket setup and delivers a full, step-by-step implementation guide.
 
 <!--more-->
 
-# Headings
+## Flow Diagram :
 
-The following HTML `<h1>`—`<h6>` elements represent six levels of section headings. `<h1>` is the highest section level while `<h6>` is the lowest.
+![Flow Diagram](/assets/presigned-flow.png)
 
 # H1
 
