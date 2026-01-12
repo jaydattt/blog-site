@@ -1,3 +1,3 @@
 ## website
 
-👉 [jaydatt.me]("https://www.jaydatt.me/")
+👉 [jaydatt.me]("https://jaydatt.me")
