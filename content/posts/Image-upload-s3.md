@@ -6,7 +6,7 @@ date = 2026-01-12
 tags = [ "nextjs","aws","s3"]
 +++
 
-Speed up file uploads and lighten your server load by uploading directly to S3 from the frontend using AWS presigned URLs. This article covers S3 bucket setup and delivers a full, step-by-step implementation guide.
+Speed up file uploads and lighten your server load by uploading directly to S3 from the nextjs frontend using AWS presigned URLs.
 
 <!--more-->
 
@@ -14,17 +14,25 @@ Speed up file uploads and lighten your server load by uploading directly to S3 f
 
 ![Flow Diagram](/assets/presigned-flow.png)
 
-# H1
+> This diagram provides a high-level overview of how the presigned URL upload flow is set up.
 
-## H2
+## 1. Client requests a presigned URL from the Next.js server
 
-### H3
-
-#### H4
-
-##### H5
-
-###### H6
+```javascript,linenos
+/*
+ * Step 1: From the client component, requesting a presigned S3 URL
+ * here we're using API Routes
+ */
+const presignUrl = await fetch("/api/s3/presigned", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    fileName: file?.name,
+    fileType: file?.type,
+    folder: SERVICES_FOLDER_NAME_FOR_S3,
+  }),
+});
+```
 
 # Paragraph
 
@@ -90,20 +98,6 @@ This is pre text
 ```
 
 ### Code block with backticks and language specified
-
-```html,linenos
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>Example HTML5 Document</title>
-        <meta name="description" content="Sample article showcasing basic Markdown syntax and formatting for HTML elements.">
-    </head>
-    <body>
-        <p>Test</p>
-    </body>
-</html>
-```
 
 ### Code block indented with four spaces
 
