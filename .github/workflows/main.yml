@@ -1,46 +1,24 @@
 name: Build and Deploy Zola
-
 on:
   push:
     branches:
-      - master # or main if that's your default branch
+      - master
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write # required for GitHub Pages deploy
+  contents: write # allows the action to push to gh-pages
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      # 1️⃣ Checkout repo
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
         with:
-          submodules: true # if your Zola theme is a submodule
+          submodules: true # use 'recursive' if your theme has its own submodules
 
-      # 2️⃣ Install Zola
-      - name: Install Zola
-        run: |
-          curl -sSL https://github.com/getzola/zola/releases/latest/download/zola-x86_64-unknown-linux-gnu.tar.gz | tar xz
-          sudo mv zola /usr/local/bin/
-
-      # 3️⃣ Build Zola site
-      - name: Build Zola site
-        run: zola build
-
-      # 4️⃣ Configure GitHub Pages
-      - name: Configure Pages
-        uses: actions/configure-pages@v3
-
-      # 5️⃣ Upload the built site
-      - name: Upload site artifact
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: public # Zola output folder
-
-      # 6️⃣ Deploy to GitHub Pages
-      - name: Deploy to Pages
-        uses: actions/deploy-pages@v1
+      - name: Build and deploy
+        uses: shalzz/zola-deploy-action@v0.19.2
+        env:
+          PAGES_BRANCH: gh-pages
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CNAME: jaydatt.me
