@@ -14,24 +14,112 @@ Speed up file uploads and lighten your server load by uploading directly to S3 f
 
 ![Flow Diagram](/assets/presigned-flow.png)
 
-> This diagram provides a high-level overview of how the presigned URL upload flow is set up.
+> _This diagram provides a high-level overview of how the presigned URL upload flow is set up._
 
 ## 1. Client requests a presigned URL from the Next.js server
 
+- A presigned URL is generated on the backend using the AWS SDK. The SDK uses AWS credentials from environment variables
+
 ```javascript,linenos
 /*
- * Step 1: From the client component, requesting a presigned S3 URL
- * here we're using API Routes
+ * From client component, requesting a presigned S3 URL
+ * here we're using Next.js API Routes
  */
-const presignUrl = await fetch("/api/s3/presigned", {
+const presignedUrl = await fetch("/api/s3/getPresignedUrl", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
     fileName: file?.name,
     fileType: file?.type,
-    folder: SERVICES_FOLDER_NAME_FOR_S3,
+    fileSize: file.size,
+    folderName: SERVICES_FOLDER_NAME_FOR_S3,
   }),
 });
+```
+
+- Quick look of how your environment variables in `.env.local` should look like
+
+```javascript,linenos
+AWS_S3_BUCKET_NAME=
+AWS_REGION=
+AWS_SECRET_ACCESS_KEY=
+AWS_ACCESS_KEY_ID=
+```
+
+## 2. Next.js API route creates a presigned URL using AWS SDK
+
+path: `src/app/api/s3/getPresignedUrl/route.js`
+
+```javascript,linenos
+export const runtime = "nodejs";
+
+import { NextResponse } from "next/server";
+
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+
+
+/*
+ * Initialize the S3 client.
+ *
+ * SDK automatically loads up your creds (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+ * from environment variables not need to pass explicitly
+ */
+const s3 = new S3Client({
+  region: process.env.AWS_REGION,
+});
+
+/**
+ * POST handler to generate a presigned S3 PUT URL.
+ *
+ * Flow:
+ * 1. Client sends file metadata (name, type, size, folder)
+ * 2. Server validates input and file size
+ * 3. Server generates a time-limited presigned URL
+ */
+export async function POST(request) {
+    try {
+        const { fileName, fileType, fileSize, folderName } = await request.json();
+
+        if (!fileName || !fileType || !fileSize || !folderName) {
+            return NextResponse.json(
+                { error: "Missing required fields" },
+                { status: 400 }
+            );
+        }
+
+        if (fileSize > MAX_FILE_SIZE) {
+            return NextResponse.json(
+              { error: "File size exceeds 5 MB limit"},
+              { status: 400}
+            );
+        }
+
+        const key = `${folderName}/${Date.now()}_${fileName}`;
+
+        const command = new PutObjectCommand({
+            Bucket: process.env.AWS_S3_BUCKET_NAME,
+            Key: key,
+            ContentType: fileType,
+        });
+
+        const uploadUrl = await getSignedUrl(s3, command, {
+            expiresIn: 300, // 5 minutes
+        });
+
+        return NextResponse.json({
+            uploadUrl,
+            key,
+        });
+    } catch (err) {
+        console.error(err);
+        return NextResponse.json(
+            { error: "Failed to generate presigned URL" },
+            { status: 500 }
+        );
+    }
+}
+
 ```
 
 # Paragraph
@@ -85,6 +173,7 @@ This is pre text
 ### Code block with backticks
 
 ```
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
