@@ -6,7 +6,6 @@ build_search_index = true
 generate_feeds = true
 feed_filenames = ["atom.xml"]
 minify_html = true
-google_analytics = 'G-WG03B17F52'
 
 
 taxonomies = [{ name = "tags", feed = true }]
@@ -33,6 +32,7 @@ index_format = "elasticlunr_json"
 highlight_code = true
 
 [extra]
+google_analytics = 'G-WG03B17F52'
 
 [extra.papermod]
 title = "Jaydatt Ramkabir"
