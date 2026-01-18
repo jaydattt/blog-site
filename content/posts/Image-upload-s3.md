@@ -1,13 +1,23 @@
 +++
 title = "Secure Way to Handle Frontend File Uploads: S3 Presigned URLs"
+description = "Speed up file uploads and lighten your server load by uploading directly to S3 from the nextjs frontend using AWS presigned URLs."
 date = 2026-01-12
 
-[taxonomies]
-tags = [ "nextjs","aws","s3"]
-+++
+keywords = [
+  "file upload in Next.js",
+  "frontend image upload",
+  "upload image to S3 using presigned URL",
+  "AWS S3 presigned URL Next.js"
+]
 
-Speed up file uploads and lighten your server load by uploading directly to S3
-from the nextjs frontend using AWS presigned URLs.
+
+[taxonomies]
+tags = ["nextjs","aws","s3"]
+
+[extra]
+image = "assets/link-preview/presigned-flow.jpg"
+
++++
 
 <!--more-->
 

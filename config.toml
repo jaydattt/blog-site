@@ -6,6 +6,9 @@ build_search_index = true
 generate_feeds = true
 feed_filenames = ["atom.xml"]
 minify_html = true
+description = 'Jaydatt Ramkabir - Frontend developer specializing in scalable JavaScript web solutions, building rapid MVPs and optimizing client-side performance.'
+generate_sitemap = true
+generate_robots_txt = true
 
 
 taxonomies = [{ name = "tags", feed = true }]
@@ -34,12 +37,28 @@ highlight_code = true
 [extra]
 google_analytics = 'G-WG03B17F52'
 
+[extra.assets]
+favicon = "assets/favicon/favicon.ico"
+favicon16 = "assets/favicon/favicon-16x16.png"
+favicon32 = "assets/favicon/favicon-32x32.png"
+apple_touch_icon = "assets/favicon/apple-touch-icon.png"
+
+
+[extra.seo]
+site_name = "Jaydatt Ramkabir"
+default_image = "assets/person/me.jpg"
+
 [extra.papermod]
 title = "Jaydatt Ramkabir"
 default_theme = "auto"
 theme = "light"
 language_direction = "auto"
-keywords = ["keyword1", "keyword2", "keyword3"]
+keywords = [
+    "Javascript Web developer",
+    "React and Nextjs tutorials",
+    "Frontend System design for beginners",
+    "Full stack developer blog",
+]
 show_theme_toggle = true
 show_scroll_to_top = true
 show_code_copy_buttons = true
@@ -48,6 +67,8 @@ show_word_count = true
 show_post_nav_links = true
 show_post_meta = true
 default_toc_open = false
+show_toc = true
+
 show_post_edit_button = false
 show_archive_year_count = true
 show_archive_month_count = true
@@ -74,5 +95,7 @@ social_icons = [
     { url = "https://x.com/geekyjedy", title = "Twitter", icon = "twitter" },
     { url = "https://linkedin.com/in/jaydattramkabir", title = "Linkedin", icon = "linkedin" },
     { url = "https://instagram.com/geekyjedy", title = "Instagram", icon = "instagram" },
+    { url = "https://hackerrank.com/profile/geekyjedy", title = "HackerRank", icon = "hackerrank" },
+    { url = "https://topmate.io/geekyjedy", title = "Topmate", icon = "Topmate" },
     { url = "$BASE_URL/atom.xml", title = "RSS", icon = "rss" },
 ]
