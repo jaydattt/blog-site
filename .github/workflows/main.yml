@@ -1,0 +1,29 @@
+name: Build and Deploy Site
+on:
+  push:
+    branches:
+      - master
+
+      # Prevent multiple deployments running at the same time
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true # use 'recursive' if your theme has its own submodules
+
+      - name: Build and deploy
+        uses: shalzz/zola-deploy-action@v0.19.2
+        env:
+          PAGES_BRANCH: gh-pages
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CNAME: jaydatt.me
