@@ -1,0 +1,160 @@
+<!doctype html><html dir=auto lang=en><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><meta content="index, follow" name=robots><title>
+  Secure Way to Handle Frontend File Uploads: S3 Presigned URLs
+</title><meta content="Javascript Web developer, React and Nextjs tutorials, Frontend System design for beginners, Full stack developer blog" name=keywords><meta content="Speed up file uploads and lighten your server load by uploading directly to S3 from the nextjs frontend using AWS presigned URLs." name=description><meta content=Jaydatt name=author><link href=https://jaydatt.me/posts/image-upload-s3/ rel=canonical><link href=https://jaydatt.me/css/includes/scroll-bar.css rel=stylesheet><link href=https://jaydatt.me/css/styles.css rel=stylesheet><link href=https://jaydatt.me/css/override.css rel=stylesheet><link href=https://jaydatt.me/assets/favicon/favicon.ico rel=icon sizes=any><link href=https://jaydatt.me/assets/favicon/favicon-16x16.png rel=icon sizes=16x16 type=image/png><link href=https://jaydatt.me/assets/favicon/favicon-32x32.png rel=icon sizes=32x32 type=image/png><link href=https://jaydatt.me/assets/favicon/apple-touch-icon.png rel=apple-touch-icon><meta content=Jaydatt property=og:site_name><meta content="Secure Way to Handle Frontend File Uploads: S3 Presigned URLs" property=og:title><meta content="Speed up file uploads and lighten your server load by uploading directly to S3 from the nextjs frontend using AWS presigned URLs." property=og:description><meta content=https://jaydatt.me/posts/image-upload-s3/ property=og:url><meta content=article property=og:type><meta content=https://jaydatt.me/assets/link-preview/presigned-flow.jpg property=og:image><meta content=2026-01-12T00:00:00+0000 property=article:published_time><noscript><style>#theme-toggle,.top-link{display:none}</style> <style>@media (prefers-color-scheme:dark){:root{--theme:#1d1e20;--entry:#2e2e33;--primary:#dadadb;--secondary:#9b9c9d;--tertiary:#414244;--content:#c4c4c5;--hljs-bg:#2e2e33;--code-bg:#37383e;--border:#333}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><meta content="index, follow" name=robots><meta content=Jaydatt name=author><script src="https://www.googletagmanager.com/gtag/js?id=G-WG03B17F52" async></script><script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[];gtag(`js`,new Date());gtag(`config`,`G-WG03B17F52`)</script><body id=top><script>if(localStorage.getItem(`pref-theme`)===`dark`){document.body.classList.add(`dark`)}else if(localStorage.getItem(`pref-theme`)===`light`){document.body.classList.remove(`dark`)}else if(window.matchMedia(`(prefers-color-scheme: dark)`).matches){document.body.classList.add(`dark`)}</script><header class=header><nav class=nav><div class=logo><a title="Jaydatt (Alt + H)" accesskey=h href=https://jaydatt.me> Jaydatt </a><div class=logo-switches><button title="(Alt + T)" accesskey=t id=theme-toggle><svg viewbox="0 0 24 24" fill=none height=18 id=moon stroke=currentColor stroke-linecap=round stroke-linejoin=round stroke-width=2 width=24 xmlns=http://www.w3.org/2000/svg><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg> <svg viewbox="0 0 24 24" fill=none height=18 id=sun stroke=currentColor stroke-linecap=round stroke-linejoin=round stroke-width=2 width=24 xmlns=http://www.w3.org/2000/svg><circle cx=12 cy=12 r=5></circle><line x1=12 x2=12 y1=1 y2=3></line><line x1=12 x2=12 y1=21 y2=23></line><line x1=4.22 x2=5.64 y1=4.22 y2=5.64></line><line x1=18.36 x2=19.78 y1=18.36 y2=19.78></line><line x1=1 x2=3 y1=12 y2=12></line><line x1=21 x2=23 y1=12 y2=12></line><line x1=4.22 x2=5.64 y1=19.78 y2=18.36></line><line x1=18.36 x2=19.78 y1=5.64 y2=4.22></line></svg></button><ul class=lang-switch><li></ul></div></div><ul id=menu><li><a href=https://jaydatt.me/archive title=Archive> <span>Archive</span> </a><li><a href=https://jaydatt.me/posts title=Posts> <span>Posts</span> </a><li><a href=https://jaydatt.me/tags title=Tags> <span>Tags</span> </a></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://jaydatt.me>Home</a> »  <a href=https://jaydatt.me/posts/>Posts</a> »  <a href=https://jaydatt.me/posts/image-upload-s3/>Secure Way to Handle Frontend File Uploads: S3 Presigned URLs</a></div><h1 class=post-title>Secure Way to Handle Frontend File Uploads: S3 Presigned URLs</h1><div class=post-description>Speed up file uploads and lighten your server load by uploading directly to S3 from the nextjs frontend using AWS presigned URLs.</div><div class=post-meta><span title="2026-01-12 00:00:00 +0000">12-01-2026</span> · 2 min · 355 words · Jaydatt</div></header><div class=toc><details><summary title="(Alt + C)" accesskey=c><span class=details>Table of Contents</span></summary> <div class=inner><ul><li><a aria-label="Why Use Presigned URLs?" href=#why-use-presigned-urls>Why Use Presigned URLs?</a> <ul><li><a aria-label=Benefits href=#benefits>Benefits</a></ul><li><a aria-label="Flow Diagram :" href=#flow-diagram>Flow Diagram :</a><li><a aria-label="1. Client requests a presigned URL from the Next.js server" href=#1-client-requests-a-presigned-url-from-the-next-js-server>1. Client requests a presigned URL from the Next.js server</a><li><a aria-label="2. Next.js API route creates a presigned URL using AWS SDK" href=#2-next-js-api-route-creates-a-presigned-url-using-aws-sdk>2. Next.js API route creates a presigned URL using AWS SDK</a><li><a aria-label="3. Uploading Image to S3 from client side using that Presigned URL" href=#3-uploading-image-to-s3-from-client-side-using-that-presigned-url>3. Uploading Image to S3 from client side using that Presigned URL</a><li><a aria-label="4. S3 Bucket Policy & CORS Configuration :" href=#4-s3-bucket-policy-cors-configuration>4. S3 Bucket Policy & CORS Configuration :</a> <ul><li><a aria-label="S3 bucket policy :" href=#s3-bucket-policy>S3 bucket policy :</a><li><a aria-label="CORS Configurations of S3 Bucket" href=#cors-configurations-of-s3-bucket>CORS Configurations of S3 Bucket</a></ul><li><a aria-label="Final Thoughts" href=#final-thoughts>Final Thoughts</a></ul></div></details></div><div class=post-content><span id=continue-reading></span><h2 id=why-use-presigned-urls>Why Use Presigned URLs?<a aria-hidden=true class=anchor hidden href=#why-use-presigned-urls>#</a></h2><p>Uploading files through your backend can quickly become a bottleneck, large payloads, slow response times, and unnecessary server costs. A secure and scalable alternative is uploading files directly from the frontend to Amazon S3 using presigned URLs.<h3 id=benefits>Benefits<a aria-hidden=true class=anchor hidden href=#benefits>#</a></h3><ul><li>🚀 Faster uploads<li>🔒 Strong security guarantees<li>💸 Lower backend costs<li>📈 Infinite scalability</ul><h2 id=flow-diagram>Flow Diagram :<a aria-hidden=true class=anchor hidden href=#flow-diagram>#</a></h2><p><img alt="Flow Diagram" src=/assets/presigned-flow.png><blockquote><p><em>This diagram provides a high-level overview of how the presigned URL upload flow is set up.</em></blockquote><h2 id=1-client-requests-a-presigned-url-from-the-next-js-server>1. Client requests a presigned URL from the Next.js server<a aria-hidden=true class=anchor hidden href=#1-client-requests-a-presigned-url-from-the-next-js-server>#</a></h2><ul><li>A presigned URL is generated on the server using the AWS SDK. The SDK uses AWS credentials from environment variables</ul><pre class=language-javascript data-lang=javascript data-linenos><code class=language-javascript data-lang=javascript><table><tbody><tr><td>1<td>/*
+<tr><td>2<td> * From client component, requesting a presigned S3 URL
+<tr><td>3<td> * here we're using Next.js API Routes
+<tr><td>4<td> */
+<tr><td>5<td>const presignedUrl = await fetch("/api/s3/getPresignedUrl", {
+<tr><td>6<td>  method: "POST",
+<tr><td>7<td>  headers: { "Content-Type": "application/json" },
+<tr><td>8<td>  body: JSON.stringify({
+<tr><td>9<td>    fileName: file?.name,
+<tr><td>10<td>    fileType: file?.type,
+<tr><td>11<td>    fileSize: file.size,
+<tr><td>12<td>    folderName: SERVICES_FOLDER_NAME_FOR_S3,
+<tr><td>13<td>  }),
+<tr><td>14<td>});
+<tr><td>15<td>
+<tr><td>16<td>/*
+<tr><td>17<td> * Handling response
+<tr><td>18<td> */
+<tr><td>19<td>const presignedData = await presignedUrl.json()
+<tr><td>20<td>
+<tr><td>21<td> if (!presignedData.ok) {
+<tr><td>22<td>  toastError(presignData?.error || "Failed to get upload URL")
+<tr><td>23<td>  return
+<tr><td>24<td>}
+<tr><td>25<td>
+</table></code></pre><ul><li>Quick look of how your environment variables in <code>.env.local</code> should look like</ul><pre class=language-javascript data-lang=javascript data-linenos><code class=language-javascript data-lang=javascript><table><tbody><tr><td>1<td>/*
+<tr><td>2<td> * S3 bucket variables
+<tr><td>3<td> */
+<tr><td>4<td>AWS_S3_BUCKET_NAME=
+<tr><td>5<td>AWS_REGION=
+<tr><td>6<td>AWS_SECRET_ACCESS_KEY=
+<tr><td>7<td>AWS_ACCESS_KEY_ID=
+</table></code></pre><blockquote><p>⚠️ Do not prefix them with NEXT_PUBLIC</blockquote><h2 id=2-next-js-api-route-creates-a-presigned-url-using-aws-sdk>2. Next.js API route creates a presigned URL using AWS SDK<a aria-hidden=true class=anchor hidden href=#2-next-js-api-route-creates-a-presigned-url-using-aws-sdk>#</a></h2><p>path: <code>src/app/api/s3/getPresignedUrl/route.js</code><pre class=language-javascript data-lang=javascript data-linenos><code class=language-javascript data-lang=javascript><table><tbody><tr><td>1<td>export const runtime = "nodejs";
+<tr><td>2<td>
+<tr><td>3<td>import { NextResponse } from "next/server";
+<tr><td>4<td>
+<tr><td>5<td>import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+<tr><td>6<td>import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+<tr><td>7<td>
+<tr><td>8<td>
+<tr><td>9<td>/*
+<tr><td>10<td> * Initialize the S3 client.
+<tr><td>11<td> *
+<tr><td>12<td> * SDK automatically loads up your creds (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+<tr><td>13<td> * from environment variables not need to pass explicitly
+<tr><td>14<td> */
+<tr><td>15<td>const s3 = new S3Client({
+<tr><td>16<td>  region: process.env.AWS_REGION,
+<tr><td>17<td>});
+<tr><td>18<td>
+<tr><td>19<td>/**
+<tr><td>20<td> * POST handler to generate a presigned S3 PUT URL.
+<tr><td>21<td> *
+<tr><td>22<td> * Flow:
+<tr><td>23<td> * 1. Client sends file metadata (name, type, size, folder)
+<tr><td>24<td> * 2. Server validates input and file size
+<tr><td>25<td> * 3. Server generates a time-limited presigned URL
+<tr><td>26<td> */
+<tr><td>27<td>export async function POST(request) {
+<tr><td>28<td>    try {
+<tr><td>29<td>        const { fileName, fileType, fileSize, folderName } = await request.json();
+<tr><td>30<td>
+<tr><td>31<td>        if (!fileName || !fileType || !fileSize || !folderName) {
+<tr><td>32<td>            return NextResponse.json(
+<tr><td>33<td>                { error: "Missing required fields" },
+<tr><td>34<td>                { status: 400 }
+<tr><td>35<td>            );
+<tr><td>36<td>        }
+<tr><td>37<td>
+<tr><td>38<td>        if (fileSize > MAX_FILE_SIZE) {
+<tr><td>39<td>            return NextResponse.json(
+<tr><td>40<td>              { error: "File size exceeds 5 MB limit"},
+<tr><td>41<td>              { status: 400}
+<tr><td>42<td>            );
+<tr><td>43<td>        }
+<tr><td>44<td>
+<tr><td>45<td>        const key = `${folderName}/${Date.now()}_${fileName}`;
+<tr><td>46<td>
+<tr><td>47<td>        const command = new PutObjectCommand({
+<tr><td>48<td>            Bucket: process.env.AWS_S3_BUCKET_NAME,
+<tr><td>49<td>            Key: key,
+<tr><td>50<td>            ContentType: fileType,
+<tr><td>51<td>        });
+<tr><td>52<td>
+<tr><td>53<td>        const uploadUrl = await getSignedUrl(s3, command, {
+<tr><td>54<td>            expiresIn: 60 * 5, // 5 minutes
+<tr><td>55<td>        });
+<tr><td>56<td>
+<tr><td>57<td>        return NextResponse.json({
+<tr><td>58<td>            uploadUrl,
+<tr><td>59<td>            key,
+<tr><td>60<td>        });
+<tr><td>61<td>    } catch (err) {
+<tr><td>62<td>        console.error(err);
+<tr><td>63<td>        return NextResponse.json(
+<tr><td>64<td>            { error: "Failed to generate presigned URL" },
+<tr><td>65<td>            { status: 500 }
+<tr><td>66<td>        );
+<tr><td>67<td>    }
+<tr><td>68<td>}
+<tr><td>69<td>
+</table></code></pre><h2 id=3-uploading-image-to-s3-from-client-side-using-that-presigned-url>3. Uploading Image to S3 from client side using that Presigned URL<a aria-hidden=true class=anchor hidden href=#3-uploading-image-to-s3-from-client-side-using-that-presigned-url>#</a></h2><pre class=language-javascript data-lang=javascript data-linenos><code class=language-javascript data-lang=javascript><table><tbody><tr><td>1<td>const uploadResponse = await fetch(uploadUrl, {
+<tr><td>2<td>    method: "PUT",
+<tr><td>3<td>    headers: {
+<tr><td>4<td>     "Content-Type": file.type,
+<tr><td>5<td>    },
+<tr><td>6<td>    body: file,
+<tr><td>7<td> })
+<tr><td>8<td>
+<tr><td>9<td>if (!uploadResponse.ok) {
+<tr><td>10<td>  throw new Error("Upload failed");
+<tr><td>11<td>}
+</table></code></pre><blockquote><p>S3 validates the request against the parameters embedded in the URL, such as the expiration time, bucket name, object key, and access key.</blockquote><blockquote><p>Although your<code>AWS_ACCESS_KEY_ID</code>is visible in the presigned URL, your <code>AWS_SECRET_ACCESS_KEY</code>is never exposed at any point in the process. The signature is cryptographically generated on the server and cannot be reversed or reused beyond the URL’s expiration time.</blockquote><p>🎉At this point, the file is already stored in S3, your backend(if using other then nextjs) was never involved in the upload itself.<h2 id=4-s3-bucket-policy-cors-configuration>4. S3 Bucket Policy & CORS Configuration :<a aria-hidden=true class=anchor hidden href=#4-s3-bucket-policy-cors-configuration>#</a></h2><ul><li>Make sure to give IAM user a least privilege, grant only what is strictly required.</ul><h3 id=s3-bucket-policy>S3 bucket policy :<a aria-hidden=true class=anchor hidden href=#s3-bucket-policy>#</a></h3><pre class=language-json data-lang=json data-linenos><code class=language-json data-lang=json><table><tbody><tr><td>1<td>{
+<tr><td>2<td>  "Version": "2012-10-17",
+<tr><td>3<td>  "Statement": [
+<tr><td>4<td>    {
+<tr><td>5<td>      "Sid": "EnforceHTTPSOnly",
+<tr><td>6<td>      "Effect": "Deny",
+<tr><td>7<td>      "Principal": "*",
+<tr><td>8<td>      "Action": "s3:*",
+<tr><td>9<td>      "Resource": [
+<tr><td>10<td>        "arn:aws:s3:::&LTyour-bucket-name>",
+<tr><td>11<td>        "arn:aws:s3:::&LTyour-bucket-name>/*"
+<tr><td>12<td>      ],
+<tr><td>13<td>      "Condition": {
+<tr><td>14<td>        "Bool": {
+<tr><td>15<td>          "aws:SecureTransport": "false"
+<tr><td>16<td>        }
+<tr><td>17<td>      }
+<tr><td>18<td>    },
+<tr><td>19<td>    {
+<tr><td>20<td>      "Sid": "AllowUploadToSpecificFolders",
+<tr><td>21<td>      "Effect": "Allow",
+<tr><td>22<td>      "Principal": "*",
+<tr><td>23<td>      "Action": ["s3:PutObject", "s3:GetObject"],
+<tr><td>24<td>      "Resource": "arn:aws:s3:::&LTyour-bucket-name>/*" // you may specify specific folder here
+<tr><td>25<td>    }
+<tr><td>26<td>  ]
+<tr><td>27<td>}
+</table></code></pre><blockquote><p><code>s3:GetObject</code>is optional and only required if you also generate presigned URLs for downloads</blockquote><h3 id=cors-configurations-of-s3-bucket>CORS Configurations of S3 Bucket<a aria-hidden=true class=anchor hidden href=#cors-configurations-of-s3-bucket>#</a></h3><pre class=language-json data-lang=json data-linenos><code class=language-json data-lang=json><table><tbody><tr><td>1<td>[
+<tr><td>2<td>    {
+<tr><td>3<td>        "AllowedHeaders": [
+<tr><td>4<td>            "Content-Type"
+<tr><td>5<td>        ],
+<tr><td>6<td>        "AllowedMethods": [
+<tr><td>7<td>            "PUT"
+<tr><td>8<td>        ],
+<tr><td>9<td>        "AllowedOrigins": [
+<tr><td>10<td>            "http://localhost:3000",
+<tr><td>11<td>            "https://your-domain.com"
+<tr><td>12<td>        ],
+<tr><td>13<td>        "ExposeHeaders": [
+<tr><td>14<td>            "ETag"
+<tr><td>15<td>        ],
+<tr><td>16<td>        "MaxAgeSeconds": 3000
+<tr><td>17<td>    }
+<tr><td>18<td>]
+</table></code></pre><ul><li><code>PUT</code>is required for uploads<li>Restrict<code>AllowedOrigins</code>to trusted domains only<li><code>ExposeHeaders</code>is optional but useful for debugging uploads</ul><h2 id=final-thoughts>Final Thoughts<a aria-hidden=true class=anchor hidden href=#final-thoughts>#</a></h2><p>Direct uploads to S3 using presigned URLs are one of the most secure and scalable patterns for handling files in modern web applications.<p>If you’re building a Next.js application that handles user-generated content, this should be your default upload strategy.<p>Happy shipping and keep your buckets locked down 🔐</div><footer class=post-footer><ul class=post-tags><li><a href=https://jaydatt.me/tags/nextjs/>nextjs</a><li><a href=https://jaydatt.me/tags/aws/>aws</a><li><a href=https://jaydatt.me/tags/s3/>s3</a></ul><nav class=paginav></nav></footer></article></main><footer class=footer><span>© 2026 <a href=https://jaydatt.me>Jaydatt</a></span></footer><a aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g class=top-link href=#top id=top-link> <svg viewbox="0 0 12 6" fill=currentColor xmlns=http://www.w3.org/2000/svg><path d="M12 6H0l6-6z"/></svg> </a><script>let menu=document.getElementById(`menu`);if(menu){let a=`menu-scroll-position`;menu.scrollLeft=localStorage.getItem(a);menu.onscroll=(()=>{localStorage.setItem(a,menu.scrollLeft)})};document.querySelectorAll(`a[href^="#"]`).forEach(a=>{let c=null,b=decodeURIComponent;a.addEventListener(`click`,function(a){a.preventDefault();var d=this.getAttribute(`href`).substr(1);if(!window.matchMedia(`(prefers-reduced-motion: reduce)`).matches){document.querySelector(`[id='${b(d)}']`).scrollIntoView({behavior:`smooth`})}else{document.querySelector(`[id='${b(d)}']`).scrollIntoView()};if(d===`top`){history.replaceState(c,c,` `)}else{history.pushState(c,c,`#${d}`)}})})</script><script>var mybutton=document.getElementById(`top-link`);window.onscroll=(()=>{let a=800;if(document.body.scrollTop>a||document.documentElement.scrollTop>a){mybutton.style.visibility=`visible`;mybutton.style.opacity=`1`}else{mybutton.style.visibility=`hidden`;mybutton.style.opacity=`0`}})</script><script>document.getElementById(`theme-toggle`).addEventListener(`click`,()=>{let a=`dark`,b=`pref-theme`;if(document.body.className.includes(a)){document.body.classList.remove(a);localStorage.setItem(b,`light`)}else{document.body.classList.add(a);localStorage.setItem(b,a)}})</script><script>document.querySelectorAll(`pre > code`).forEach(a=>{let e=`copy`,f=`TABLE`;var d=(()=>{c.innerText=`copied!`;setTimeout(()=>{c.innerText=e},2000)});const b=a.parentNode.parentNode;const c=document.createElement(`button`);c.classList.add(`copy-code`);c.innerText=e;c.addEventListener(`click`,b=>{if(`clipboard` in navigator){var c=a.textContent;if(a.firstChild.tagName==f){c=Array(...a.firstChild.getElementsByTagName(`span`)).map(a=>a.textContent).join(``)};navigator.clipboard.writeText(c);d();return};const g=document.createRange();g.selectNodeContents(a);const h=window.getSelection();h.removeAllRanges();h.addRange(g);try{document.execCommand(e);d()}catch(a){}h.removeRange(g)});if(b.classList.contains(`highlight`)){b.appendChild(c)}else if(b.parentNode.firstChild==b){}else if(a.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName==f){a.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(c)}else{a.parentNode.appendChild(c)}})</script>

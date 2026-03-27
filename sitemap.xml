@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://jaydatt.me/</loc>
+    </url>
+    <url>
+        <loc>https://jaydatt.me/archive/</loc>
+    </url>
+    <url>
+        <loc>https://jaydatt.me/page/1/</loc>
+    </url>
+    <url>
+        <loc>https://jaydatt.me/posts/</loc>
+    </url>
+    <url>
+        <loc>https://jaydatt.me/posts/image-upload-s3/</loc>
+        <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
+        <loc>https://jaydatt.me/posts/page/1/</loc>
+    </url>
+    <url>
+        <loc>https://jaydatt.me/tags/</loc>
+    </url>
+    <url>
+        <loc>https://jaydatt.me/tags/aws/</loc>
+    </url>
+    <url>
+        <loc>https://jaydatt.me/tags/nextjs/</loc>
+    </url>
+    <url>
+        <loc>https://jaydatt.me/tags/s3/</loc>
+    </url>
+</urlset>

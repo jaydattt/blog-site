@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>Jaydatt - aws</title>
+    <subtitle>Jaydatt - Frontend developer specializing in scalable JavaScript web solutions, building rapid MVPs and optimizing client-side performance.</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://jaydatt.me/tags/aws/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://jaydatt.me"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2026-01-12T00:00:00+00:00</updated>
+    <id>https://jaydatt.me/tags/aws/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Secure Way to Handle Frontend File Uploads: S3 Presigned URLs</title>
+        <published>2026-01-12T00:00:00+00:00</published>
+        <updated>2026-01-12T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Jaydatt
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://jaydatt.me/posts/image-upload-s3/"/>
+        <id>https://jaydatt.me/posts/image-upload-s3/</id>
+        
+        <content type="html" xml:base="https://jaydatt.me/posts/image-upload-s3/">&lt;span id=&quot;continue-reading&quot;&gt;&lt;&#x2F;span&gt;&lt;h2 id=&quot;why-use-presigned-urls&quot;&gt;Why Use Presigned URLs?&lt;a class=&quot;anchor&quot; aria-hidden=&quot;true&quot; href=&quot;#why-use-presigned-urls&quot; hidden=&quot;&quot;&gt;#&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;Uploading files through your backend can quickly become a bottleneck, large
+payloads, slow response times, and unnecessary server costs. A secure and
+scalable alternative is uploading files directly from the frontend to Amazon S3
+using presigned URLs.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;benefits&quot;&gt;Benefits&lt;a class=&quot;anchor&quot; aria-hidden=&quot;true&quot; href=&quot;#benefits&quot; hidden=&quot;&quot;&gt;#&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;🚀 Faster uploads&lt;&#x2F;li&gt;
+&lt;li&gt;🔒 Strong security guarantees&lt;&#x2F;li&gt;
+&lt;li&gt;💸 Lower backend costs&lt;&#x2F;li&gt;
+&lt;li&gt;📈 Infinite scalability&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;flow-diagram&quot;&gt;Flow Diagram :&lt;a class=&quot;anchor&quot; aria-hidden=&quot;true&quot; href=&quot;#flow-diagram&quot; hidden=&quot;&quot;&gt;#&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;assets&#x2F;presigned-flow.png&quot; alt=&quot;Flow Diagram&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;This diagram provides a high-level overview of how the presigned URL upload
+flow is set up.&lt;&#x2F;em&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h2 id=&quot;1-client-requests-a-presigned-url-from-the-next-js-server&quot;&gt;1. Client requests a presigned URL from the Next.js server&lt;a class=&quot;anchor&quot; aria-hidden=&quot;true&quot; href=&quot;#1-client-requests-a-presigned-url-from-the-next-js-server&quot; hidden=&quot;&quot;&gt;#&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;A presigned URL is generated on the server using the AWS SDK. The SDK uses AWS
+credentials from environment variables&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;pre data-linenos data-lang=&quot;javascript&quot; class=&quot;language-javascript &quot;&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;1&lt;&#x2F;td&gt;&lt;td&gt;&amp;#x2F;*
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;2&lt;&#x2F;td&gt;&lt;td&gt; * From client component, requesting a presigned S3 URL
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;3&lt;&#x2F;td&gt;&lt;td&gt; * here we&amp;#x27;re using Next.js API Routes
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;4&lt;&#x2F;td&gt;&lt;td&gt; *&amp;#x2F;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;5&lt;&#x2F;td&gt;&lt;td&gt;const presignedUrl = await fetch(&amp;quot;&amp;#x2F;api&amp;#x2F;s3&amp;#x2F;getPresignedUrl&amp;quot;, {
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;6&lt;&#x2F;td&gt;&lt;td&gt;  method: &amp;quot;POST&amp;quot;,
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;7&lt;&#x2F;td&gt;&lt;td&gt;  headers: { &amp;quot;Content-Type&amp;quot;: &amp;quot;application&amp;#x2F;json&amp;quot; },
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;8&lt;&#x2F;td&gt;&lt;td&gt;  body: JSON.stringify({
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;9&lt;&#x2F;td&gt;&lt;td&gt;    fileName: file?.name,
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;10&lt;&#x2F;td&gt;&lt;td&gt;    fileType: file?.type,
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;11&lt;&#x2F;td&gt;&lt;td&gt;    fileSize: file.size,
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;12&lt;&#x2F;td&gt;&lt;td&gt;    folderName: SERVICES_FOLDER_NAME_FOR_S3,
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;13&lt;&#x2F;td&gt;&lt;td&gt;  }),
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;14&lt;&#x2F;td&gt;&lt;td&gt;});
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;15&lt;&#x2F;td&gt;&lt;td&gt;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;16&lt;&#x2F;td&gt;&lt;td&gt;&amp;#x2F;*
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;17&lt;&#x2F;td&gt;&lt;td&gt; * Handling response
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;18&lt;&#x2F;td&gt;&lt;td&gt; *&amp;#x2F;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;19&lt;&#x2F;td&gt;&lt;td&gt;const presignedData = await presignedUrl.json()
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;20&lt;&#x2F;td&gt;&lt;td&gt;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;21&lt;&#x2F;td&gt;&lt;td&gt; if (!presignedData.ok) {
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;22&lt;&#x2F;td&gt;&lt;td&gt;  toastError(presignData?.error || &amp;quot;Failed to get upload URL&amp;quot;)
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;23&lt;&#x2F;td&gt;&lt;td&gt;  return
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;24&lt;&#x2F;td&gt;&lt;td&gt;}
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;25&lt;&#x2F;td&gt;&lt;td&gt;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Quick look of how your environment variables in &lt;code&gt;.env.local&lt;&#x2F;code&gt; should look like&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;pre data-linenos data-lang=&quot;javascript&quot; class=&quot;language-javascript &quot;&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;1&lt;&#x2F;td&gt;&lt;td&gt;&amp;#x2F;*
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;2&lt;&#x2F;td&gt;&lt;td&gt; * S3 bucket variables
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;3&lt;&#x2F;td&gt;&lt;td&gt; *&amp;#x2F;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;4&lt;&#x2F;td&gt;&lt;td&gt;AWS_S3_BUCKET_NAME=
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;5&lt;&#x2F;td&gt;&lt;td&gt;AWS_REGION=
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;6&lt;&#x2F;td&gt;&lt;td&gt;AWS_SECRET_ACCESS_KEY=
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;7&lt;&#x2F;td&gt;&lt;td&gt;AWS_ACCESS_KEY_ID=
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;⚠️ Do not prefix them with NEXT_PUBLIC&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h2 id=&quot;2-next-js-api-route-creates-a-presigned-url-using-aws-sdk&quot;&gt;2. Next.js API route creates a presigned URL using AWS SDK&lt;a class=&quot;anchor&quot; aria-hidden=&quot;true&quot; href=&quot;#2-next-js-api-route-creates-a-presigned-url-using-aws-sdk&quot; hidden=&quot;&quot;&gt;#&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;path: &lt;code&gt;src&#x2F;app&#x2F;api&#x2F;s3&#x2F;getPresignedUrl&#x2F;route.js&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;pre data-linenos data-lang=&quot;javascript&quot; class=&quot;language-javascript &quot;&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;1&lt;&#x2F;td&gt;&lt;td&gt;export const runtime = &amp;quot;nodejs&amp;quot;;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;2&lt;&#x2F;td&gt;&lt;td&gt;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;3&lt;&#x2F;td&gt;&lt;td&gt;import { NextResponse } from &amp;quot;next&amp;#x2F;server&amp;quot;;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;4&lt;&#x2F;td&gt;&lt;td&gt;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;5&lt;&#x2F;td&gt;&lt;td&gt;import { S3Client, PutObjectCommand } from &amp;quot;@aws-sdk&amp;#x2F;client-s3&amp;quot;;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;6&lt;&#x2F;td&gt;&lt;td&gt;import { getSignedUrl } from &amp;quot;@aws-sdk&amp;#x2F;s3-request-presigner&amp;quot;;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;7&lt;&#x2F;td&gt;&lt;td&gt;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;8&lt;&#x2F;td&gt;&lt;td&gt;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;9&lt;&#x2F;td&gt;&lt;td&gt;&amp;#x2F;*
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;10&lt;&#x2F;td&gt;&lt;td&gt; * Initialize the S3 client.
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;11&lt;&#x2F;td&gt;&lt;td&gt; *
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;12&lt;&#x2F;td&gt;&lt;td&gt; * SDK automatically loads up your creds (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;13&lt;&#x2F;td&gt;&lt;td&gt; * from environment variables not need to pass explicitly
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;14&lt;&#x2F;td&gt;&lt;td&gt; *&amp;#x2F;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;15&lt;&#x2F;td&gt;&lt;td&gt;const s3 = new S3Client({
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;16&lt;&#x2F;td&gt;&lt;td&gt;  region: process.env.AWS_REGION,
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;17&lt;&#x2F;td&gt;&lt;td&gt;});
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;18&lt;&#x2F;td&gt;&lt;td&gt;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;19&lt;&#x2F;td&gt;&lt;td&gt;&amp;#x2F;**
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;20&lt;&#x2F;td&gt;&lt;td&gt; * POST handler to generate a presigned S3 PUT URL.
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;21&lt;&#x2F;td&gt;&lt;td&gt; *
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;22&lt;&#x2F;td&gt;&lt;td&gt; * Flow:
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;23&lt;&#x2F;td&gt;&lt;td&gt; * 1. Client sends file metadata (name, type, size, folder)
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;24&lt;&#x2F;td&gt;&lt;td&gt; * 2. Server validates input and file size
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;25&lt;&#x2F;td&gt;&lt;td&gt; * 3. Server generates a time-limited presigned URL
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;26&lt;&#x2F;td&gt;&lt;td&gt; *&amp;#x2F;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;27&lt;&#x2F;td&gt;&lt;td&gt;export async function POST(request) {
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;28&lt;&#x2F;td&gt;&lt;td&gt;    try {
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;29&lt;&#x2F;td&gt;&lt;td&gt;        const { fileName, fileType, fileSize, folderName } = await request.json();
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;30&lt;&#x2F;td&gt;&lt;td&gt;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;31&lt;&#x2F;td&gt;&lt;td&gt;        if (!fileName || !fileType || !fileSize || !folderName) {
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;32&lt;&#x2F;td&gt;&lt;td&gt;            return NextResponse.json(
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;33&lt;&#x2F;td&gt;&lt;td&gt;                { error: &amp;quot;Missing required fields&amp;quot; },
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;34&lt;&#x2F;td&gt;&lt;td&gt;                { status: 400 }
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;35&lt;&#x2F;td&gt;&lt;td&gt;            );
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;36&lt;&#x2F;td&gt;&lt;td&gt;        }
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;37&lt;&#x2F;td&gt;&lt;td&gt;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;38&lt;&#x2F;td&gt;&lt;td&gt;        if (fileSize &amp;gt; MAX_FILE_SIZE) {
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;39&lt;&#x2F;td&gt;&lt;td&gt;            return NextResponse.json(
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;40&lt;&#x2F;td&gt;&lt;td&gt;              { error: &amp;quot;File size exceeds 5 MB limit&amp;quot;},
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;41&lt;&#x2F;td&gt;&lt;td&gt;              { status: 400}
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;42&lt;&#x2F;td&gt;&lt;td&gt;            );
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;43&lt;&#x2F;td&gt;&lt;td&gt;        }
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;44&lt;&#x2F;td&gt;&lt;td&gt;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;45&lt;&#x2F;td&gt;&lt;td&gt;        const key = `${folderName}&amp;#x2F;${Date.now()}_${fileName}`;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;46&lt;&#x2F;td&gt;&lt;td&gt;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;47&lt;&#x2F;td&gt;&lt;td&gt;        const command = new PutObjectCommand({
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;48&lt;&#x2F;td&gt;&lt;td&gt;            Bucket: process.env.AWS_S3_BUCKET_NAME,
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;49&lt;&#x2F;td&gt;&lt;td&gt;            Key: key,
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;50&lt;&#x2F;td&gt;&lt;td&gt;            ContentType: fileType,
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;51&lt;&#x2F;td&gt;&lt;td&gt;        });
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;52&lt;&#x2F;td&gt;&lt;td&gt;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;53&lt;&#x2F;td&gt;&lt;td&gt;        const uploadUrl = await getSignedUrl(s3, command, {
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;54&lt;&#x2F;td&gt;&lt;td&gt;            expiresIn: 60 * 5, &amp;#x2F;&amp;#x2F; 5 minutes
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;55&lt;&#x2F;td&gt;&lt;td&gt;        });
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;56&lt;&#x2F;td&gt;&lt;td&gt;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;57&lt;&#x2F;td&gt;&lt;td&gt;        return NextResponse.json({
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;58&lt;&#x2F;td&gt;&lt;td&gt;            uploadUrl,
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;59&lt;&#x2F;td&gt;&lt;td&gt;            key,
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;60&lt;&#x2F;td&gt;&lt;td&gt;        });
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;61&lt;&#x2F;td&gt;&lt;td&gt;    } catch (err) {
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;62&lt;&#x2F;td&gt;&lt;td&gt;        console.error(err);
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;63&lt;&#x2F;td&gt;&lt;td&gt;        return NextResponse.json(
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;64&lt;&#x2F;td&gt;&lt;td&gt;            { error: &amp;quot;Failed to generate presigned URL&amp;quot; },
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;65&lt;&#x2F;td&gt;&lt;td&gt;            { status: 500 }
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;66&lt;&#x2F;td&gt;&lt;td&gt;        );
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;67&lt;&#x2F;td&gt;&lt;td&gt;    }
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;68&lt;&#x2F;td&gt;&lt;td&gt;}
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;69&lt;&#x2F;td&gt;&lt;td&gt;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;3-uploading-image-to-s3-from-client-side-using-that-presigned-url&quot;&gt;3. Uploading Image to S3 from client side using that Presigned URL&lt;a class=&quot;anchor&quot; aria-hidden=&quot;true&quot; href=&quot;#3-uploading-image-to-s3-from-client-side-using-that-presigned-url&quot; hidden=&quot;&quot;&gt;#&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;pre data-linenos data-lang=&quot;javascript&quot; class=&quot;language-javascript &quot;&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;1&lt;&#x2F;td&gt;&lt;td&gt;const uploadResponse = await fetch(uploadUrl, {
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;2&lt;&#x2F;td&gt;&lt;td&gt;    method: &amp;quot;PUT&amp;quot;,
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;3&lt;&#x2F;td&gt;&lt;td&gt;    headers: {
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;4&lt;&#x2F;td&gt;&lt;td&gt;     &amp;quot;Content-Type&amp;quot;: file.type,
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;5&lt;&#x2F;td&gt;&lt;td&gt;    },
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;6&lt;&#x2F;td&gt;&lt;td&gt;    body: file,
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;7&lt;&#x2F;td&gt;&lt;td&gt; })
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;8&lt;&#x2F;td&gt;&lt;td&gt;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;9&lt;&#x2F;td&gt;&lt;td&gt;if (!uploadResponse.ok) {
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;10&lt;&#x2F;td&gt;&lt;td&gt;  throw new Error(&amp;quot;Upload failed&amp;quot;);
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;11&lt;&#x2F;td&gt;&lt;td&gt;}
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;S3 validates the request against the parameters embedded in the URL, such as
+the expiration time, bucket name, object key, and access key.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Although your&lt;code&gt;AWS_ACCESS_KEY_ID&lt;&#x2F;code&gt;is visible in the presigned URL, your
+&lt;code&gt;AWS_SECRET_ACCESS_KEY&lt;&#x2F;code&gt;is never exposed at any point in the process. The
+signature is cryptographically generated on the server and cannot be reversed
+or reused beyond the URL’s expiration time.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;🎉At this point, the file is already stored in S3, your backend(if using other
+then nextjs) was never involved in the upload itself.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;4-s3-bucket-policy-cors-configuration&quot;&gt;4. S3 Bucket Policy &amp;amp; CORS Configuration :&lt;a class=&quot;anchor&quot; aria-hidden=&quot;true&quot; href=&quot;#4-s3-bucket-policy-cors-configuration&quot; hidden=&quot;&quot;&gt;#&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Make sure to give IAM user a least privilege, grant only what is strictly
+required.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;s3-bucket-policy&quot;&gt;S3 bucket policy :&lt;a class=&quot;anchor&quot; aria-hidden=&quot;true&quot; href=&quot;#s3-bucket-policy&quot; hidden=&quot;&quot;&gt;#&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;pre data-linenos data-lang=&quot;json&quot; class=&quot;language-json &quot;&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;1&lt;&#x2F;td&gt;&lt;td&gt;{
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;2&lt;&#x2F;td&gt;&lt;td&gt;  &amp;quot;Version&amp;quot;: &amp;quot;2012-10-17&amp;quot;,
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;3&lt;&#x2F;td&gt;&lt;td&gt;  &amp;quot;Statement&amp;quot;: [
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;4&lt;&#x2F;td&gt;&lt;td&gt;    {
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;5&lt;&#x2F;td&gt;&lt;td&gt;      &amp;quot;Sid&amp;quot;: &amp;quot;EnforceHTTPSOnly&amp;quot;,
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;6&lt;&#x2F;td&gt;&lt;td&gt;      &amp;quot;Effect&amp;quot;: &amp;quot;Deny&amp;quot;,
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;7&lt;&#x2F;td&gt;&lt;td&gt;      &amp;quot;Principal&amp;quot;: &amp;quot;*&amp;quot;,
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;8&lt;&#x2F;td&gt;&lt;td&gt;      &amp;quot;Action&amp;quot;: &amp;quot;s3:*&amp;quot;,
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;9&lt;&#x2F;td&gt;&lt;td&gt;      &amp;quot;Resource&amp;quot;: [
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;10&lt;&#x2F;td&gt;&lt;td&gt;        &amp;quot;arn:aws:s3:::&amp;lt;your-bucket-name&amp;gt;&amp;quot;,
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;11&lt;&#x2F;td&gt;&lt;td&gt;        &amp;quot;arn:aws:s3:::&amp;lt;your-bucket-name&amp;gt;&amp;#x2F;*&amp;quot;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;12&lt;&#x2F;td&gt;&lt;td&gt;      ],
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;13&lt;&#x2F;td&gt;&lt;td&gt;      &amp;quot;Condition&amp;quot;: {
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;14&lt;&#x2F;td&gt;&lt;td&gt;        &amp;quot;Bool&amp;quot;: {
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;15&lt;&#x2F;td&gt;&lt;td&gt;          &amp;quot;aws:SecureTransport&amp;quot;: &amp;quot;false&amp;quot;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;16&lt;&#x2F;td&gt;&lt;td&gt;        }
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;17&lt;&#x2F;td&gt;&lt;td&gt;      }
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;18&lt;&#x2F;td&gt;&lt;td&gt;    },
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;19&lt;&#x2F;td&gt;&lt;td&gt;    {
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;20&lt;&#x2F;td&gt;&lt;td&gt;      &amp;quot;Sid&amp;quot;: &amp;quot;AllowUploadToSpecificFolders&amp;quot;,
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;21&lt;&#x2F;td&gt;&lt;td&gt;      &amp;quot;Effect&amp;quot;: &amp;quot;Allow&amp;quot;,
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;22&lt;&#x2F;td&gt;&lt;td&gt;      &amp;quot;Principal&amp;quot;: &amp;quot;*&amp;quot;,
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;23&lt;&#x2F;td&gt;&lt;td&gt;      &amp;quot;Action&amp;quot;: [&amp;quot;s3:PutObject&amp;quot;, &amp;quot;s3:GetObject&amp;quot;],
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;24&lt;&#x2F;td&gt;&lt;td&gt;      &amp;quot;Resource&amp;quot;: &amp;quot;arn:aws:s3:::&amp;lt;your-bucket-name&amp;gt;&amp;#x2F;*&amp;quot; &amp;#x2F;&amp;#x2F; you may specify specific folder here
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;25&lt;&#x2F;td&gt;&lt;td&gt;    }
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;26&lt;&#x2F;td&gt;&lt;td&gt;  ]
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;27&lt;&#x2F;td&gt;&lt;td&gt;}
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;s3:GetObject&lt;&#x2F;code&gt;is optional and only required if you also generate presigned
+URLs for downloads&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h3 id=&quot;cors-configurations-of-s3-bucket&quot;&gt;CORS Configurations of S3 Bucket&lt;a class=&quot;anchor&quot; aria-hidden=&quot;true&quot; href=&quot;#cors-configurations-of-s3-bucket&quot; hidden=&quot;&quot;&gt;#&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;pre data-linenos data-lang=&quot;json&quot; class=&quot;language-json &quot;&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;1&lt;&#x2F;td&gt;&lt;td&gt;[
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;2&lt;&#x2F;td&gt;&lt;td&gt;    {
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;3&lt;&#x2F;td&gt;&lt;td&gt;        &amp;quot;AllowedHeaders&amp;quot;: [
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;4&lt;&#x2F;td&gt;&lt;td&gt;            &amp;quot;Content-Type&amp;quot;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;5&lt;&#x2F;td&gt;&lt;td&gt;        ],
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;6&lt;&#x2F;td&gt;&lt;td&gt;        &amp;quot;AllowedMethods&amp;quot;: [
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;7&lt;&#x2F;td&gt;&lt;td&gt;            &amp;quot;PUT&amp;quot;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;8&lt;&#x2F;td&gt;&lt;td&gt;        ],
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;9&lt;&#x2F;td&gt;&lt;td&gt;        &amp;quot;AllowedOrigins&amp;quot;: [
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;10&lt;&#x2F;td&gt;&lt;td&gt;            &amp;quot;http:&amp;#x2F;&amp;#x2F;localhost:3000&amp;quot;,
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;11&lt;&#x2F;td&gt;&lt;td&gt;            &amp;quot;https:&amp;#x2F;&amp;#x2F;your-domain.com&amp;quot;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;12&lt;&#x2F;td&gt;&lt;td&gt;        ],
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;13&lt;&#x2F;td&gt;&lt;td&gt;        &amp;quot;ExposeHeaders&amp;quot;: [
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;14&lt;&#x2F;td&gt;&lt;td&gt;            &amp;quot;ETag&amp;quot;
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;15&lt;&#x2F;td&gt;&lt;td&gt;        ],
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;16&lt;&#x2F;td&gt;&lt;td&gt;        &amp;quot;MaxAgeSeconds&amp;quot;: 3000
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;17&lt;&#x2F;td&gt;&lt;td&gt;    }
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;tr&gt;&lt;td&gt;18&lt;&#x2F;td&gt;&lt;td&gt;]
+&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;PUT&lt;&#x2F;code&gt;is required for uploads&lt;&#x2F;li&gt;
+&lt;li&gt;Restrict&lt;code&gt;AllowedOrigins&lt;&#x2F;code&gt;to trusted domains only&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;ExposeHeaders&lt;&#x2F;code&gt;is optional but useful for debugging uploads&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;final-thoughts&quot;&gt;Final Thoughts&lt;a class=&quot;anchor&quot; aria-hidden=&quot;true&quot; href=&quot;#final-thoughts&quot; hidden=&quot;&quot;&gt;#&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;Direct uploads to S3 using presigned URLs are one of the most secure and
+scalable patterns for handling files in modern web applications.&lt;&#x2F;p&gt;
+&lt;p&gt;If you’re building a Next.js application that handles user-generated content,
+this should be your default upload strategy.&lt;&#x2F;p&gt;
+&lt;p&gt;Happy shipping and keep your buckets locked down 🔐&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>
