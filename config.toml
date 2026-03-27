@@ -1,12 +1,12 @@
-author = "Jaydatt Ramkabir"
-title = "Jaydatt Ramkabir"
+author = "Jaydatt"
+title = "Jaydatt"
 base_url = "https://jaydatt.me"
 compile_sass = true
 build_search_index = true
 generate_feeds = true
 feed_filenames = ["atom.xml"]
 minify_html = true
-description = 'Jaydatt Ramkabir - Frontend developer specializing in scalable JavaScript web solutions, building rapid MVPs and optimizing client-side performance.'
+description = 'Jaydatt - Frontend developer specializing in scalable JavaScript web solutions, building rapid MVPs and optimizing client-side performance.'
 generate_sitemap = true
 generate_robots_txt = true
 
@@ -32,7 +32,7 @@ index_format = "elasticlunr_json"
 [markdown]
 # Whether to do syntax highlighting
 # Theme can be customised by setting the `highlight_theme` variable to a theme supported by Zola
-highlight_code = true
+# highlighting = true
 
 [extra]
 google_analytics = 'G-WG03B17F52'
@@ -45,11 +45,11 @@ apple_touch_icon = "assets/favicon/apple-touch-icon.png"
 
 
 [extra.seo]
-site_name = "Jaydatt Ramkabir"
+site_name = "Jaydatt"
 default_image = "assets/person/me.jpg"
 
 [extra.papermod]
-title = "Jaydatt Ramkabir"
+title = "Jaydatt"
 default_theme = "auto"
 theme = "light"
 language_direction = "auto"
@@ -93,9 +93,7 @@ home_title = "👋🏽Hello!"
 social_icons = [
     { url = "https://github.com/jaydattt", title = "GitHub", icon = "github" },
     { url = "https://x.com/geekyjedy", title = "Twitter", icon = "twitter" },
-    { url = "https://linkedin.com/in/jaydattramkabir", title = "Linkedin", icon = "linkedin" },
     { url = "https://instagram.com/geekyjedy", title = "Instagram", icon = "instagram" },
-    { url = "https://hackerrank.com/profile/geekyjedy", title = "HackerRank", icon = "hackerrank" },
     { url = "https://topmate.io/geekyjedy", title = "Topmate", icon = "Topmate" },
     { url = "$BASE_URL/atom.xml", title = "RSS", icon = "rss" },
 ]

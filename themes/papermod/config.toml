@@ -1,4 +1,4 @@
-author = "Jaydatt Ramkabir"
+author = "Jaydatt"
 title = "Jaydatt"
 base_url = "https://cydave.github.io/zola-theme-papermod"
 compile_sass = true
@@ -34,7 +34,7 @@ highlight_code = true
 [extra]
 
 [extra.papermod]
-title = "Jaydatt Ramkabir"
+title = "Jaydatt"
 default_theme = "auto"
 theme = "light"
 language_direction = "auto"
@@ -71,7 +71,6 @@ home_title = "👋🏽Hello!"
 social_icons = [
     { url = "https://github.com/jaydattt", title = "GitHub", icon = "github" },
     { url = "https://x.com/geekyjedy", title = "Twitter", icon = "twitter" },
-    { url = "https://linkedin.com/in/jaydattramkabir", title = "Linkedin", icon = "linkedin" },
     { url = "https://instagram.com/geekyjedy", title = "Instagram", icon = "instagram" },
     { url = "$BASE_URL/atom.xml", title = "RSS", icon = "rss" },
 ]
