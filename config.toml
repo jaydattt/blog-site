@@ -6,7 +6,7 @@ build_search_index = true
 generate_feeds = true
 feed_filenames = ["atom.xml"]
 minify_html = true
-description = 'Jaydatt Ramkabir - Frontend developer specializing in scalable JavaScript web solutions, building rapid MVPs and optimizing client-side performance.'
+description = 'Jaydatt Ramkabir - FullStack developer specializing in scalable JavaScript web solutions, building rapid MVPs and optimizing client-side performance.'
 generate_sitemap = true
 generate_robots_txt = true
 
@@ -84,7 +84,7 @@ navigation = [
 ]
 
 home_content = '''
-<p style="margin-bottom: 0.5rem;">I'm a <strong>Frontend Developer</strong> deeply embedded in the 
+<p style="margin-bottom: 0.5rem;">I'm a <strong>FullStack Developer</strong> deeply embedded in the 
 <strong><span style="color: #ca9800; font-weight: bold;">JavaScript</span></strong> ecosystem. focused on architecting scalable web solutions and optimizing client-side performance. <br> I specialize in shipping <strong>revenue-generating products</strong> and can often be found rapidly engineering <strong>MVP</strong>s from concept to launch.🚀</p> <br/>
 
 <p>Beyond the terminal, either I'm exploring capital markets, or seeking out new cultures and landscapes, I prioritize physical discipline and a healthy lifestyle, operating on the belief that a healthy body leads to a healthy codebase.</p>
